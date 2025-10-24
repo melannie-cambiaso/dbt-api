@@ -1,0 +1,180 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AdminAuthResponse {
+  accessToken: String!
+  admin: AdminUser!
+  expiresIn: String!
+}
+
+input AdminLoginInput {
+  email: String!
+  password: String!
+}
+
+enum AdminRole {
+  ADMIN
+  SUPER_ADMIN
+  SUPPORT
+}
+
+type AdminUser {
+  active: Boolean!
+  allowedIps: [String!]
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  lastAccess: DateTime
+  name: String!
+  requiresPasswordChange: Boolean!
+  role: AdminRole!
+  updatedAt: DateTime!
+}
+
+type AuthResponse {
+  accessToken: String!
+  expiresIn: String!
+  user: User!
+}
+
+input CreateTherapistInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  phone: String
+}
+
+type DailyRecord {
+  anxiety: Int
+  copingStrategies: String
+  createdAt: DateTime!
+  crisisPlanActivated: Boolean!
+  date: DateTime!
+  emotions: String
+  energy: Int
+  exerciseMinutes: String
+  id: ID!
+  medicationTaken: String
+  mood: Int
+  notes: String
+  session: Session!
+  sessionId: ID!
+  sleepHours: String
+  stress: Int
+  therapistNotes: String
+  triggers: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  activateTherapist(id: ID!): Therapist!
+  adminLogin(input: AdminLoginInput!): AdminAuthResponse!
+  createTherapist(input: CreateTherapistInput!): Therapist!
+  deactivateTherapist(id: ID!): Therapist!
+  login(loginInput: LoginInput!): AuthResponse!
+  register(registerInput: RegisterInput!): AuthResponse!
+  removeTherapist(id: ID!): Boolean!
+  updateTherapist(id: ID!, input: UpdateTherapistInput!): Therapist!
+}
+
+type Query {
+  adminMe: AdminUser!
+  health: String!
+  hello: String!
+  me: User!
+  protectedRoute: String!
+  therapist(id: ID!): Therapist!
+  therapistByEmail(email: String!): Therapist
+  therapistPatientCount(id: ID!): Float!
+  therapists(activeOnly: Boolean! = false): [Therapist!]!
+}
+
+input RegisterInput {
+  dateOfBirth: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  profilePhotoUrl: String
+}
+
+enum ResponseFrequency {
+  DAILY
+  TWICE_DAILY
+  WEEKLY
+}
+
+type Session {
+  createdAt: DateTime!
+  dailyRecords: [DailyRecord!]!
+  endDate: DateTime
+  id: ID!
+  phoneConsultationUsed: Boolean!
+  responseFrequency: ResponseFrequency!
+  startDate: DateTime!
+  status: SessionStatus!
+  user: User!
+  userId: ID!
+}
+
+enum SessionStatus {
+  ACTIVE
+  CANCELLED
+  COMPLETED
+}
+
+type Therapist {
+  active: Boolean!
+  createdAt: DateTime!
+  email: String!
+  firstName: String!
+  id: ID!
+  lastName: String!
+  patients: [User!]!
+  phone: String
+  updatedAt: DateTime!
+}
+
+input UpdateTherapistInput {
+  active: Boolean
+  email: String
+  firstName: String
+  lastName: String
+  phone: String
+}
+
+type User {
+  adminNotes: String
+  createdAt: DateTime!
+  createdByAdminId: String
+  dateOfBirth: DateTime
+  email: String!
+  emailVerified: Boolean!
+  firstName: String!
+  id: ID!
+  lastAccess: DateTime
+  lastName: String!
+  profilePhotoUrl: String
+  requiresPasswordChange: Boolean!
+  sessions: [Session!]!
+  status: UserStatus!
+  therapist: Therapist
+  therapistId: String
+  updatedAt: DateTime!
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
