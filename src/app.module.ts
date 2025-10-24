@@ -11,6 +11,7 @@ import { AppResolver } from './app.resolver';
 import { AuthModule } from './modules/auth/auth.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { TherapistsModule } from './modules/therapists/therapists.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { TherapistsModule } from './modules/therapists/therapists.module';
     AuthModule,
     AdminModule,
     TherapistsModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

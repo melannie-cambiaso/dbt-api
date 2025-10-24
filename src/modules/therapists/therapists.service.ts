@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ConflictException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Therapist } from '../../entities/therapist.entity';
+import { User } from '../../entities/user.entity';
 import { CreateTherapistInput } from './dto/create-therapist.dto';
 import { UpdateTherapistInput } from './dto/update-therapist.dto';
 
@@ -10,6 +11,8 @@ export class TherapistsService {
   constructor(
     @InjectRepository(Therapist)
     private readonly therapistRepository: Repository<Therapist>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async create(createTherapistInput: CreateTherapistInput): Promise<Therapist> {
@@ -38,12 +41,23 @@ export class TherapistsService {
     
     return this.therapistRepository.find({
       where,
-      relations: ['patients'],
       order: { lastName: 'ASC', firstName: 'ASC' },
     });
   }
 
   async findOne(id: string): Promise<Therapist> {
+    const therapist = await this.therapistRepository.findOne({
+      where: { id },
+    });
+
+    if (!therapist) {
+      throw new NotFoundException('Therapist not found');
+    }
+
+    return therapist;
+  }
+
+  async findOneWithPatients(id: string): Promise<Therapist> {
     const therapist = await this.therapistRepository.findOne({
       where: { id },
       relations: ['patients'],
@@ -59,7 +73,6 @@ export class TherapistsService {
   async findByEmail(email: string): Promise<Therapist | null> {
     return this.therapistRepository.findOne({
       where: { email: email.toLowerCase() },
-      relations: ['patients'],
     });
   }
 
@@ -115,15 +128,23 @@ export class TherapistsService {
   }
 
   async getPatientCount(id: string): Promise<number> {
+    // Verificar que el terapeuta existe
     const therapist = await this.therapistRepository.findOne({
       where: { id },
-      relations: ['patients'],
     });
 
     if (!therapist) {
       throw new NotFoundException('Therapist not found');
     }
 
-    return therapist.patients.filter(patient => patient.status === 'active').length;
+    // Contar pacientes activos usando query builder para evitar cargar la relación
+    const count = await this.therapistRepository
+      .createQueryBuilder('therapist')
+      .leftJoin('users', 'user', 'user.therapist_id = therapist.id')
+      .where('therapist.id = :id', { id })
+      .andWhere('user.status = :status', { status: 'active' })
+      .getCount();
+
+    return count;
   }
 }

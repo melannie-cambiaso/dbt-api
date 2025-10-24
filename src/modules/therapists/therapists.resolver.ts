@@ -1,7 +1,8 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { TherapistsService } from './therapists.service';
 import { Therapist } from '../../entities/therapist.entity';
+import { User } from '../../entities/user.entity';
 import { CreateTherapistInput } from './dto/create-therapist.dto';
 import { UpdateTherapistInput } from './dto/update-therapist.dto';
 import { AdminJwtGuard } from '../admin/guards/admin-jwt.guard';
@@ -84,5 +85,11 @@ export class TherapistsResolver {
     @CurrentAdmin() admin: AdminUser,
   ): Promise<number> {
     return this.therapistsService.getPatientCount(id);
+  }
+
+  @ResolveField(() => [User])
+  async patients(@Parent() therapist: Therapist): Promise<User[]> {
+    const therapistWithPatients = await this.therapistsService.findOneWithPatients(therapist.id);
+    return therapistWithPatients.patients || [];
   }
 }

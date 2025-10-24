@@ -38,6 +38,6 @@ export class Therapist {
   updatedAt: Date;
 
   @Field(() => [User])
-  @OneToMany(() => User, user => user.therapistId)
+  @OneToMany(() => User, user => user.therapist)
   patients: User[];
 }

@@ -88,6 +88,8 @@ type Mutation {
 }
 
 type Query {
+  activeUserCount: Float!
+  activeUsers: [User!]!
   adminMe: AdminUser!
   health: String!
   hello: String!
@@ -97,6 +99,11 @@ type Query {
   therapistByEmail(email: String!): Therapist
   therapistPatientCount(id: ID!): Float!
   therapists(activeOnly: Boolean! = false): [Therapist!]!
+  user(id: ID!): User!
+  userByEmail(email: String!): User
+  userCount: Float!
+  users: [User!]!
+  usersByTherapist(therapistId: ID!): [User!]!
 }
 
 input RegisterInput {
