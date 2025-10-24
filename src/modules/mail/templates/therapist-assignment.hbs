@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignación de Terapeuta - DBT Santiago</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #17a2b8;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 0 0 5px 5px;
+        }
+        .therapist-box {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👨‍⚕️ Asignación de Terapeuta</h1>
+    </div>
+    
+    <div class="content">
+        <p>Estimado/a <strong>{{firstName}} {{lastName}}</strong>,</p>
+        
+        <p>Nos complace informarle que se le ha asignado un terapeuta especializado para acompañarle en su proceso de tratamiento DBT.</p>
+        
+        <div class="therapist-box">
+            <h3>👩‍⚕️ Su Terapeuta Asignado</h3>
+            <p><strong>Nombre:</strong> {{therapistName}}</p>
+            <p><strong>Email de contacto:</strong> <a href="mailto:{{therapistEmail}}">{{therapistEmail}}</a></p>
+        </div>
+        
+        <h3>📋 Próximos pasos:</h3>
+        <ul>
+            <li>Su terapeuta se pondrá en contacto con usted para coordinar la primera sesión</li>
+            <li>Podrá ver la información de su terapeuta en su perfil de la plataforma</li>
+            <li>Tendrá acceso a herramientas de comunicación especializadas</li>
+        </ul>
+        
+        <p>Recuerde que puede continuar utilizando todas las funciones de la plataforma DBT Santiago, y ahora su progreso será supervisado por su terapeuta asignado.</p>
+        
+        <p>Si tiene alguna pregunta sobre esta asignación o necesita asistencia, contáctenos en <a href="mailto:{{supportEmail}}">{{supportEmail}}</a></p>
+        
+        <p>¡Estamos comprometidos con su bienestar y progreso!</p>
+        
+        <p>Atentamente,<br>
+        <strong>Equipo DBT Santiago</strong></p>
+    </div>
+    
+    <div class="footer">
+        <p>Este es un correo automático, por favor no responda a esta dirección.</p>
+        <p>© 2025 DBT Santiago. Todos los derechos reservados.</p>
+    </div>
+</body>
+</html>

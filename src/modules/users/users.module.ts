@@ -7,12 +7,14 @@ import { UsersService } from './users.service';
 import { UsersResolver } from './users.resolver';
 import { AdminModule } from '../admin/admin.module';
 import { AuthModule } from '../auth/auth.module';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Therapist, Session]),
     AdminModule,
     AuthModule,
+    MailModule,
   ],
   providers: [UsersService, UsersResolver],
   exports: [UsersService],

@@ -12,6 +12,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { TherapistsModule } from './modules/therapists/therapists.module';
 import { UsersModule } from './modules/users/users.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { UsersModule } from './modules/users/users.module';
     AdminModule,
     TherapistsModule,
     UsersModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

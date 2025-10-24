@@ -45,6 +45,17 @@ input CreateTherapistInput {
   phone: String
 }
 
+input CreateUserInput {
+  adminNotes: String
+  dateOfBirth: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  profilePhotoUrl: String
+  therapistId: String
+}
+
 type DailyRecord {
   anxiety: Int
   copingStrategies: String
@@ -78,13 +89,20 @@ input LoginInput {
 
 type Mutation {
   activateTherapist(id: ID!): Therapist!
+  activateUser(id: ID!): User!
   adminLogin(input: AdminLoginInput!): AdminAuthResponse!
+  assignTherapistToUser(therapistId: ID!, userId: ID!): User!
   createTherapist(input: CreateTherapistInput!): Therapist!
+  createUser(input: CreateUserInput!): User!
   deactivateTherapist(id: ID!): Therapist!
+  deactivateUser(id: ID!): User!
   login(loginInput: LoginInput!): AuthResponse!
   register(registerInput: RegisterInput!): AuthResponse!
   removeTherapist(id: ID!): Boolean!
+  removeTherapistFromUser(userId: ID!): User!
+  removeUser(id: ID!): Boolean!
   updateTherapist(id: ID!, input: UpdateTherapistInput!): Therapist!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
 }
 
 type Query {
@@ -158,6 +176,20 @@ input UpdateTherapistInput {
   firstName: String
   lastName: String
   phone: String
+}
+
+input UpdateUserInput {
+  adminNotes: String
+  dateOfBirth: String
+  email: String
+  emailVerified: Boolean
+  firstName: String
+  lastName: String
+  password: String
+  profilePhotoUrl: String
+  requiresPasswordChange: Boolean
+  status: UserStatus
+  therapistId: String
 }
 
 type User {
