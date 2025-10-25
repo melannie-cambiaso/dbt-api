@@ -12,9 +12,20 @@ export class MailService {
 
   async sendUserWelcomeEmail(user: User, password: string): Promise<void> {
     const frontendUrl = this.configService.get<string>('FRONTEND_URL', 'http://localhost:5173');
+    const mailUser = this.configService.get<string>('MAIL_USER');
+    const mailPassword = this.configService.get<string>('MAIL_PASSWORD');
+    
+    // Si no hay credenciales configuradas, solo logear
+    if (!mailUser || !mailPassword) {
+      console.log(`📧 Email credentials not configured - would send welcome email to: ${user.email}`);
+      console.log(`📧 User credentials: ${user.email} / ${password}`);
+      return;
+    }
     
     try {
-      await this.mailerService.sendMail({
+      console.log(`📧 Attempting to send welcome email to: ${user.email}`);
+      
+      const result = await this.mailerService.sendMail({
         to: user.email,
         subject: 'Bienvenido a DBT Santiago - Credenciales de Acceso',
         template: 'user-welcome',
@@ -27,8 +38,21 @@ export class MailService {
           supportEmail: 'soporte@dbtsantiago.cl',
         },
       });
+      
+      console.log(`✅ Welcome email sent successfully to: ${user.email}`);
+      console.log(`📧 Result:`, result);
+      
     } catch (error) {
-      console.error('Error sending welcome email:', error);
+      console.error('❌ Error sending welcome email:', error.message);
+      
+      // Si es un error de SSL/TLS, dar información específica
+      if (error.message.includes('SSL') || error.message.includes('TLS')) {
+        console.error('� SSL/TLS Error - Check your email configuration:');
+        console.error('   - For Gmail: Use port 587 with STARTTLS');
+        console.error('   - Make sure you have an App Password, not your regular password');
+        console.error('   - Check that 2FA is enabled and App Password is generated');
+      }
+      
       // No lanzamos el error para que no interfiera con la creación del usuario
     }
   }
